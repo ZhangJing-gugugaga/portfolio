@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenith Jade (MoonZJ) — 揽星穹之盛，怀璞玉之温</title>
+  <meta name="description" content="Zenith Jade (MoonZJ) 个人审美与器物展陈空间。揽星穹之盛，怀璞玉之温。" />
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM — ZENITH JADE (MOONZJ)
+       调研并融合 Awwwards 最佳个人作品集 (Rauno Freiberg, Paco Coursey, Lee Robinson) 首幕设计范式：
+       1. 摒弃传统 SaaS 营销页的“大白块药丸按钮 + 密集段落堆砌”，采用杂志海报级（Editorial Poster）首幕构图：
+          - 双语意象互文：Zenith (星穹之盛) ↔ Jade (璞玉之温)
+          - Z 与 J 首字母采用三阶香槟金金属渐变与柔光星芒提亮，enith 与 ade 采用月雾银渐变，字距舒展优雅
+          - 『揽星穹之盛，怀璞玉之温。』采用手绘几何细金线直角引号框定，彻底避免系统字体空心『』符号的廉价感
+          - 底部采用极简编号建筑感文字链 (01 器物展陈 / 02 GitHub / 03 技术文集) 替代笨重的胶囊按钮
+       2. 五幕严格 100vh 等高对位，使 0% / 25% / 50% / 75% / 100% 滚动位置与五种月相分毫不差，绝不遮挡标题
+       ========================================================================== */
+    :root {
+      --bg-deep: #04060B;
+      --surface-glass: rgba(11, 15, 24, 0.52);
+      --surface-glass-hover: rgba(18, 24, 38, 0.70);
+      --border-subtle: rgba(235, 232, 224, 0.12);
+      --border-glow: rgba(242, 222, 182, 0.38);
+
+      --text-primary: #F7F5F0;
+      --text-secondary: rgba(236, 232, 224, 0.74);
+      --text-muted: rgba(200, 196, 188, 0.46);
+      --moon-accent: #EED7A8;
+      --moon-gold-bright: #FFF1CE;
+      --moon-silver: #DCE5F5;
+
+      --font-display: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", Georgia, serif;
+      --font-latin: "Palatino Linotype", "Book Antiqua", "Optima", Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       1. FULL-VIEWPORT LIVING MOON & STAR VORTEX CANVAS
+       ========================================================================== */
+    #lunarStage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .vignette-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 45%, transparent 62%, rgba(3, 5, 9, 0.48) 100%);
+    }
+
+    .cursor-astrolabe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 44px;
+      height: 44px;
+      margin-left: -22px;
+      margin-top: -22px;
+      border-radius: 50%;
+      border: 1px solid rgba(238, 215, 168, 0.35);
+      pointer-events: none;
+      z-index: 55;
+      transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), margin 0.3s var(--ease-out-expo), border-color 0.3s ease, background 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(238, 215, 168, 0.14);
+    }
+
+    .cursor-astrolabe::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--moon-accent);
+      box-shadow: 0 0 10px var(--moon-accent);
+    }
+
+    .cursor-astrolabe.hovered {
+      width: 64px;
+      height: 64px;
+      margin-left: -32px;
+      margin-top: -32px;
+      border-color: rgba(238, 215, 168, 0.72);
+      background: rgba(238, 215, 168, 0.06);
+    }
+
+    @media (hover: none), (max-width: 960px) {
+      .cursor-astrolabe {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       2. MINIMAL FLOATING EMBLEM (左上角轻量徽标)
+       ========================================================================== */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 40;
+      padding: 28px 64px;
+      pointer-events: none;
+    }
+
+    .brand-signature {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 15px 6px 11px;
+      border-radius: 999px;
+      background: rgba(10, 13, 22, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.3s ease;
+    }
+
+    .brand-signature:hover {
+      border-color: var(--border-glow);
+    }
+
+    .brand-crescent {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      box-shadow: inset -5px -2px 0 0 var(--moon-accent);
+      filter: drop-shadow(0 0 8px rgba(238, 215, 168, 0.65));
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .brand-signature:hover .brand-crescent {
+      transform: rotate(-18deg) scale(1.1);
+    }
+
+    .brand-title {
+      font-family: var(--font-latin);
+      font-size: 14px;
+      letter-spacing: 0.16em;
+      color: rgba(236, 232, 224, 0.62);
+    }
+
+    .brand-title strong {
+      color: var(--moon-gold-bright);
+      font-weight: 600;
+      text-shadow: 0 0 12px rgba(238, 215, 168, 0.45);
+    }
+
+    /* ==========================================================================
+       3. SPATIAL SCROLLYTELLING SCENES (五幕严格 100vh 居中剧场布局)
+       ========================================================================== */
+    .story-container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .scene {
+      height: 100vh;
+      min-height: 760px;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 96px 64px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* --------------------------------------------------------------------------
+       SCENE 1: 首幕 · Editorial Poster 级视觉构图
+       - 以 Zenith Jade (Z · J 金属金辉提亮) 为第一视觉锚点
+       - 以定制定制几何细金线框定的『揽星穹之盛，怀璞玉之温。』为东方美学核心
+       - 以建筑感编号文字链取代廉价胶囊按钮
+       -------------------------------------------------------------------------- */
+    .hero-poster {
+      max-width: 680px;
+      position: relative;
+      padding-left: 28px;
+      border-left: 1px solid rgba(238, 215, 168, 0.22);
+    }
+
+    /* 左侧垂直金线顶部的星芒锚点 */
+    .hero-poster::before {
+      content: "";
+      position: absolute;
+      left: -3px;
+      top: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--moon-gold-bright);
+      box-shadow: 0 0 12px var(--moon-gold-bright);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      color: rgba(238, 215, 168, 0.72);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .eyebrow-dot {
+      color: var(--moon-gold-bright);
+      font-size: 10px;
+    }
+
+    /* Zenith Jade 主视觉：Title Case + Z/J 璀璨香槟金渐变提亮 */
+    .hero-monogram-title {
+      font-family: var(--font-latin);
+      font-size: clamp(54px, 6.4vw, 88px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 0.28em;
+      user-select: none;
+    }
+
+    .zj-token {
+      display: inline-flex;
+      align-items: baseline;
+      position: relative;
+    }
+
+    .zj-cap {
+      font-size: 1.08em;
+      font-weight: 600;
+      background: linear-gradient(160deg, #FFFFFF 0%, #FCE8BE 42%, #D5AE69 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 22px rgba(245, 216, 158, 0.48));
+      position: relative;
+    }
+
+    .zj-tail {
+      background: linear-gradient(180deg, rgba(247, 245, 240, 0.88) 0%, rgba(200, 210, 228, 0.42) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .zj-star-sep {
+      font-size: 0.32em;
+      color: rgba(238, 215, 168, 0.55);
+      transform: translateY(-0.85em);
+    }
+
+    /* 『揽星穹之盛，怀璞玉之温。』—— 摒弃系统字体丑陋的空心『』字符，改用精工几何细金线角标 */
+    .hero-poetic-box {
+      position: relative;
+      display: inline-block;
+      padding: 14px 26px 14px 22px;
+      margin-bottom: 28px;
+      background: linear-gradient(90deg, rgba(238, 215, 168, 0.06) 0%, rgba(238, 215, 168, 0.0) 100%);
+    }
+
+    /* 左上角『 几何双直角线 */
+    .hero-poetic-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-top: 1.5px solid var(--moon-accent);
+      border-left: 1.5px solid var(--moon-accent);
+      opacity: 0.85;
+    }
+
+    /* 右下角 』几何双直角线 */
+    .hero-poetic-box::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 14px;
+      height: 14px;
+      border-bottom: 1.5px solid var(--moon-accent);
+      border-right: 1.5px solid var(--moon-accent);
+      opacity: 0.85;
+    }
+
+    .hero-verse-text {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.75vw, 35px);
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      line-height: 1.45;
+      color: var(--text-primary);
+      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+    }
+
+    .verse-key {
+      color: var(--moon-gold-bright);
+      font-weight: 500;
+    }
+
+    /* 第三层：凝练自述与建筑感编号导航链 (Awwwards Editorial Link Bar) */
+    .hero-essence {
+      font-size: 15.5px;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      max-width: 510px;
+      margin-bottom: 38px;
+    }
+
+    .hero-editorial-nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(235, 232, 224, 0.12);
+      max-width: 520px;
+    }
+
+    .editorial-link {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      letter-spacing: 0.05em;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.25s ease;
+    }
+
+    .editorial-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--moon-accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.35s var(--ease-out-expo);
+    }
+
+    .editorial-link:hover {
+      color: var(--moon-gold-bright);
+    }
+
+    .editorial-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .link-num {
+      font-family: var(--font-latin);
+      font-size: 11.5px;
+      color: var(--moon-accent);
+      letter-spacing: 0.08em;
+    }
+
+    .link-arrow {
+      font-size: 12px;
+      color: var(--moon-accent);
+      transition: transform 0.25s ease;
+    }
+
+    .editorial-link:hover .link-arrow {
+      transform: translate(2px, -2px);
+    }
+
+    /* --------------------------------------------------------------------------
+       SCENE 2: 01 / 格物 · 工程审美
+       -------------------------------------------------------------------------- */
+    .scene-heading-wrap {
+      max-width: 640px;
+      margin-bottom: 36px;
+    }
+
+    .scene-chapter-tag {
+      font-family: var(--font-latin);
+      font-size: 12.5px;
+      color: var(--moon-accent);
+      letter-spacing: 0.22em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .scene-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.1vw, 40px);
+      font-weight: 500;
+      line-height: 1.28;
+      margin-bottom: 14px;
+    }
+
+    .scene-lead {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      max-width: 560px;
+    }
+
+    .persona-triad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1040px;
+    }
+
+    .persona-pillar {
+      padding: 28px 26px;
+      border-radius: 22px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.45s var(--ease-out-expo), border-color 0.45s ease, background 0.45s ease;
+      position: relative;
+    }
+
+    .persona-pillar:nth-child(2) {
+      transform: translateY(12px);
+    }
+    .persona-pillar:nth-child(3) {
+      transform: translateY(24px);
+    }
+
+    .persona-pillar:hover {
+      border-color: var(--border-glow);
+      background: var(--surface-glass-hover);
+      transform: translateY(-6px);
+    }
+
+    .pillar-glyph {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      color: var(--moon-accent);
+      background: rgba(238, 215, 168, 0.07);
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .pillar-prose {
+      font-size: 14px;
+      line-height: 1.78;
+      color: var(--text-secondary);
+    }
+
+    /* --------------------------------------------------------------------------
+       SCENE 3: 02 / 器物 · 代表作品 (紧凑精致，确保在 100vh 内完整呈现)
+       -------------------------------------------------------------------------- */
+    .works-header-compact {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 24px;
+    }
+
+    .works-header-compact .scene-heading-wrap {
+      margin-bottom: 0;
+    }
+
+    .works-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .artwork-card {
+      border-radius: 22px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.45s var(--ease-out-expo), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+
+    .artwork-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 32px rgba(238, 215, 168, 0.12);
+    }
+
+    .artwork-visual {
+      height: 112px;
+      position: relative;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 30%, rgba(238, 215, 168, 0.14), rgba(8, 10, 16, 0.65));
+    }
+
+    .artwork-visual svg {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+
+    .artwork-card:hover .artwork-visual svg {
+      transform: scale(1.05);
+    }
+
+    .artwork-body {
+      padding: 20px 26px 22px;
+    }
+
+    .artwork-category {
+      font-size: 11.5px;
+      color: var(--moon-accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .artwork-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .artwork-story {
+      font-size: 13.5px;
+      line-height: 1.72;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .artwork-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+    }
+
+    .artwork-impact {
+      color: var(--moon-silver);
+    }
+
+    .artwork-action {
+      color: var(--moon-accent);
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+
+    .artwork-action:hover {
+      opacity: 0.85;
+      text-decoration: underline;
+    }
+
+    /* --------------------------------------------------------------------------
+       SCENE 4: 03 / 求索 · 演进轨迹
+       -------------------------------------------------------------------------- */
+    .journey-layout {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 48px;
+      align-items: end;
+    }
+
+    .journey-quote-panel {
+      padding: 36px;
+      border-radius: 26px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(22px);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .journey-quote {
+      font-family: var(--font-display);
+      font-size: 23px;
+      line-height: 1.58;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+
+    .journey-quote-note {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .milestone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .milestone-item {
+      padding: 22px 26px;
+      border-radius: 20px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.3s ease, transform 0.3s var(--ease-out-expo);
+    }
+
+    .milestone-item:hover {
+      border-color: var(--border-glow);
+      transform: translateX(6px);
+    }
+
+    .milestone-season {
+      font-size: 12px;
+      color: var(--moon-accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+    }
+
+    .milestone-heading {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .milestone-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.74;
+    }
+
+    /* --------------------------------------------------------------------------
+       SCENE 5: 04 / 远航 · 终章与连接
+       -------------------------------------------------------------------------- */
+    .finale-scene {
+      align-items: flex-end;
+    }
+
+    .finale-card {
+      width: 100%;
+      max-width: 720px;
+      padding: 48px 44px;
+      border-radius: 30px;
+      background: rgba(11, 14, 22, 0.62);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65), 0 0 64px rgba(238, 215, 168, 0.12);
+    }
+
+    .finale-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3.8vw, 46px);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .finale-desc {
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .portal-box {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .portal-box:hover {
+      border-color: var(--moon-accent);
+      background: rgba(238, 215, 168, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .portal-name {
+      font-family: var(--font-display);
+      font-size: 17.5px;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .portal-role {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .copyright-line {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    @media (max-width: 960px) {
+      .top-nav {
+        padding: 18px 24px;
+      }
+      .scene {
+        height: auto;
+        min-height: 100vh;
+        padding: 100px 24px 88px;
+      }
+      .hero-editorial-nav {
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+      .persona-triad,
+      .works-gallery,
+      .journey-layout,
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+      .persona-pillar:nth-child(2),
+      .persona-pillar:nth-child(3) {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 全屏动态 3D 天文月球 & 交互式星璇画布 -->
+  <canvas id="lunarStage" aria-hidden="true"></canvas>
+  <div class="vignette-layer" aria-hidden="true"></div>
+  <!-- 鼠标跟随星轨光环 -->
+  <div class="cursor-astrolabe" id="cursorAstrolabe" aria-hidden="true"></div>
+
+  <!-- 2. 左上角极简徽标 -->
+  <header class="top-nav">
+    <a href="#prelude" class="brand-signature">
+      <span class="brand-crescent"></span>
+      <span class="brand-title">Moon<strong>ZJ</strong></span>
+    </a>
+  </header>
+
+  <!-- 3. 五幕沉浸式个人审美与器物空间 -->
+  <main class="story-container">
+
+    <!-- ======================================================================
+         首幕：Editorial Poster 杂志海报级首幕构图
+         - 双语意象互文：Zenith (星穹) · Jade (璞玉)
+         - Z 与 J 首字母采用三阶香槟金金属渐变与星芒柔光提亮
+         - 『揽星穹之盛，怀璞玉之温。』采用精工几何细金线直角框定
+         ====================================================================== -->
+    <section class="scene" id="prelude" data-scene="0">
+      <div class="hero-poster">
+        <div class="hero-eyebrow">
+          <span>ZENITH · 星穹之秩序</span>
+          <span class="eyebrow-dot">✦</span>
+          <span>JADE · 璞玉之温润</span>
+        </div>
+
+        <h1 class="hero-monogram-title" aria-label="Zenith Jade">
+          <span class="zj-token"><span class="zj-cap">Z</span><span class="zj-tail">enith</span></span>
+          <span class="zj-star-sep">✦</span>
+          <span class="zj-token"><span class="zj-cap">J</span><span class="zj-tail">ade</span></span>
+        </h1>
+
+        <div class="hero-poetic-box">
+          <p class="hero-verse-text">
+            揽<span class="verse-key">星穹</span>之盛，怀<span class="verse-key">璞玉</span>之温。
+          </p>
+        </div>
+
+        <p class="hero-essence">
+          在喧嚣的智能体时代，探索安全边界、记忆架构与自动化工具链——将繁杂的工程逻辑，打磨成克制、温润、经得起推敲的器物。
+        </p>
+
+        <nav class="hero-editorial-nav" aria-label="核心入口">
+          <a href="#creations" class="editorial-link">
+            <span class="link-num">01</span>
+            <span>器物展陈</span>
+            <span class="link-arrow">↓</span>
+          </a>
+          <a href="https://github.com/ZhangJing-gugugaga" target="_blank" rel="noopener" class="editorial-link">
+            <span class="link-num">02</span>
+            <span>GitHub 开源</span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://www.moonzj.com/" target="_blank" rel="noopener" class="editorial-link">
+            <span class="link-num">03</span>
+            <span>技术文集 (moonzj.com)</span>
+            <span class="link-arrow">↗</span>
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         第二幕：01 / 格物 · 工程审美
+         ====================================================================== -->
+    <section class="scene" id="persona" data-scene="1">
+      <div class="scene-heading-wrap">
+        <div class="scene-chapter-tag">01 / PHILOSOPHY · 格物</div>
+        <h2 class="scene-title">于浩瀚处见秩序，于细微处守分寸。</h2>
+        <p class="scene-lead">
+          比起用百分比进度条罗列技术栈，我更愿意用这三件事定义自己的工程底色：面对易碎的排版、失控的权限与昂贵的算力，我如何动手求解。
+        </p>
+      </div>
+
+      <div class="persona-triad">
+        <article class="persona-pillar">
+          <div class="pillar-glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3a9 9 0 0 0 0 18c2.5-2 4-5.2 4-9s-1.5-7-4-9z" />
+            </svg>
+          </div>
+          <h3 class="pillar-title">琢玉 · 克制的造物</h3>
+          <p class="pillar-prose">
+            偏爱零冗余的系统底座。无论是仅凭 Python 标准库与物理 ID 精准驱动幻灯片母版重构，还是将冗长规则淬炼成百余行精悍契约，始终追求“少即是多”的工程秩序。
+          </p>
+        </article>
+
+        <article class="persona-pillar">
+          <div class="pillar-glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L4 6v6c0 5.5 3.4 10.6 8 12 4.6-1.4 8-6.5 8-12V6l-8-4z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <h3 class="pillar-title">筑界 · 笃行的防线</h3>
+          <p class="pillar-prose">
+            从不轻信停留在纸面上的安全建议。经历过凌晨被跨平台脚本静默清空桌面的阵痛后，亲手把防御写进拦截钩子、快照与网络边界，并为数千星开源项目修补底层死锁。
+          </p>
+        </article>
+
+        <article class="persona-pillar">
+          <div class="pillar-glyph">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 17l6-6 4 4 8-8" />
+              <circle cx="21" cy="7" r="2" />
+            </svg>
+          </div>
+          <h3 class="pillar-title">观星 · 求真的度量</h3>
+          <p class="pillar-prose">
+            拒绝人云亦云的概念狂欢。为了看清智能体底层的真实损耗，拆解本机上万轮请求的原始账单、手写双进程服务实测无状态协议容灾，让每一次判断都落在实证之上。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         第三幕：02 / 器物 · 代表作品
+         ====================================================================== -->
+    <section class="scene" id="creations" data-scene="2">
+      <div class="works-header-compact">
+        <div class="scene-heading-wrap">
+          <div class="scene-chapter-tag">02 / SELECTED WORKS · 器物</div>
+          <h2 class="scene-title">把思考铸成趁手的器物</h2>
+        </div>
+      </div>
+
+      <div class="works-gallery">
+        <!-- 作品 1 -->
+        <article class="artwork-card">
+          <div class="artwork-visual">
+            <svg viewBox="0 0 400 120" fill="none">
+              <circle cx="200" cy="60" r="46" stroke="rgba(238,215,168,0.22)" stroke-width="1" stroke-dasharray="4 4" />
+              <rect x="105" y="24" width="68" height="72" rx="6" stroke="rgba(238,215,168,0.45)" stroke-width="1.2" fill="rgba(238,215,168,0.04)" />
+              <rect x="227" y="24" width="68" height="72" rx="6" stroke="rgba(238,215,168,0.85)" stroke-width="1.5" fill="rgba(238,215,168,0.1)" />
+              <path d="M186 60 H214 M208 55 L215 60 L208 65" stroke="#EED7A8" stroke-width="1.5" />
+              <line x1="118" y1="44" x2="158" y2="44" stroke="rgba(238,215,168,0.4)" stroke-width="2" />
+              <line x1="118" y1="60" x2="148" y2="60" stroke="rgba(238,215,168,0.25)" stroke-width="2" />
+              <line x1="240" y1="44" x2="282" y2="44" stroke="#EED7A8" stroke-width="2.2" />
+              <line x1="240" y1="60" x2="276" y2="60" stroke="rgba(238,215,168,0.7)" stroke-width="2" />
+              <line x1="240" y1="76" x2="268" y2="76" stroke="rgba(238,215,168,0.5)" stroke-width="2" />
+            </svg>
+          </div>
+          <div class="artwork-body">
+            <div class="artwork-category">AI CUSTOM SKILL · 自动化排版引擎</div>
+            <h3 class="artwork-title">Populating Office Templates</h3>
+            <p class="artwork-story">
+              专为编码智能体设计的演示文稿重构技能。通过规划、页面克隆、容量审计、三级安全注入与越界自动扩框五步管线，无损保留母版视觉美学。
+            </p>
+            <div class="artwork-footer">
+              <span class="artwork-impact">零第三方依赖 · 五步物理 ID 注入</span>
+              <a class="artwork-action" href="https://github.com/ZhangJing-gugugaga/Populating-Office-Templates" target="_blank" rel="noopener">查阅开源仓库 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 作品 2 -->
+        <article class="artwork-card">
+          <div class="artwork-visual">
+            <svg viewBox="0 0 400 120" fill="none">
+              <circle cx="200" cy="60" r="48" stroke="rgba(220,229,245,0.18)" stroke-width="1" />
+              <circle cx="200" cy="60" r="34" stroke="rgba(238,215,168,0.35)" stroke-width="1.2" />
+              <circle cx="200" cy="60" r="20" stroke="rgba(238,215,168,0.68)" stroke-width="1.5" />
+              <circle cx="200" cy="60" r="7" fill="#EED7A8" />
+              <line x1="130" y1="60" x2="270" y2="60" stroke="rgba(238,215,168,0.25)" stroke-width="1" />
+              <line x1="200" y1="6" x2="200" y2="114" stroke="rgba(238,215,168,0.25)" stroke-width="1" />
+            </svg>
+          </div>
+          <div class="artwork-body">
+            <div class="artwork-category">OPEN SOURCE &amp; SECURITY · 工具链防线</div>
+            <h3 class="artwork-title">TDD-Guard 核心贡献 &amp; 四层安全钩子</h3>
+            <p class="artwork-story">
+              向 2,300+ Star 的开源项目 TDD-Guard 提交四项关键修复，解决自定义网关解析与跨平台路径匹配死锁；并自研覆盖三大终端的四层纵深防御钩子。
+            </p>
+            <div class="artwork-footer">
+              <span class="artwork-impact">798 项单元测试通过 · 零回归验证</span>
+              <a class="artwork-action" href="https://github.com/nizos/tdd-guard/pull/197" target="_blank" rel="noopener">查看 PR #197 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 作品 3 -->
+        <article class="artwork-card">
+          <div class="artwork-visual">
+            <svg viewBox="0 0 400 120" fill="none">
+              <path d="M80 86 Q140 30 200 60 T320 36" stroke="#EED7A8" stroke-width="2" fill="none" />
+              <path d="M80 96 Q155 54 215 72 T320 52" stroke="rgba(220,229,245,0.35)" stroke-width="1.2" fill="none" />
+              <circle cx="140" cy="56" r="4.5" fill="#EED7A8" />
+              <circle cx="200" cy="60" r="5.5" fill="#F7F5F0" />
+              <circle cx="264" cy="44" r="4.5" fill="#EED7A8" />
+            </svg>
+          </div>
+          <div class="artwork-body">
+            <div class="artwork-category">INDEPENDENT PRODUCTS · 独立应用矩阵</div>
+            <h3 class="artwork-title">生息守护 · Termify · Purple 校园问答</h3>
+            <p class="artwork-story">
+              围绕真实生活与开发者工作流构建的应用生态：《生息守护》聚焦全栈生活守护场景，Termify 打磨终端流畅交互，Purple 校园问答构建直觉化知识社区。
+            </p>
+            <div class="artwork-footer">
+              <span class="artwork-impact">全栈独立演进 · MoonZJ 站点应用矩阵</span>
+              <a class="artwork-action" href="https://www.moonzj.com/" target="_blank" rel="noopener">访问站点主页 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 作品 4 -->
+        <article class="artwork-card">
+          <div class="artwork-visual">
+            <svg viewBox="0 0 400 120" fill="none">
+              <circle cx="180" cy="60" r="34" stroke="rgba(238,215,168,0.78)" stroke-width="1.5" />
+              <circle cx="220" cy="60" r="34" stroke="rgba(220,229,245,0.45)" stroke-width="1.5" />
+              <path d="M200 32 A34 34 0 0 1 200 88 A34 34 0 0 1 200 32 Z" fill="rgba(238,215,168,0.18)" />
+            </svg>
+          </div>
+          <div class="artwork-body">
+            <div class="artwork-category">EMPIRICAL RESEARCH · 算力与协议实证</div>
+            <h3 class="artwork-title">Agent 算力账本与协议容灾基准</h3>
+            <p class="artwork-story">
+              剖析本机 621 个真实会话、13 亿 Token 消耗结构，建立可复用的大模型能力/价格比评测基准；并手写双进程服务实测无状态 MCP 协议熔断恢复。
+            </p>
+            <div class="artwork-footer">
+              <span class="artwork-impact">621 会话实测 · 13 亿 Token 账单拆解</span>
+              <a class="artwork-action" href="https://www.moonzj.com/posts/llm-kill-line/" target="_blank" rel="noopener">阅读实证研究 ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         第四幕：03 / 求索 · 演进维度
+         ====================================================================== -->
+    <section class="scene" id="trajectory" data-scene="3">
+      <div class="journey-layout">
+        <div class="journey-quote-panel">
+          <div class="scene-chapter-tag">03 / TRAJECTORY · 求索</div>
+          <blockquote class="journey-quote">
+            “代码是逻辑的诗，文章是思考的锚。人留给模型干不了的部分：判断、品味、担责。”
+          </blockquote>
+          <p class="journey-quote-note">
+            于代码与长文之间往复求索：用工程实践验证架构假设，再用数万字的深度复盘锚定每一次认知迭代。不追逐转瞬即逝的噱头，只关心什么能真正留存下来。
+          </p>
+        </div>
+
+        <div class="milestone-list">
+          <div class="milestone-item">
+            <div class="milestone-season">DIMENSION I · 边界与身份归因</div>
+            <h4 class="milestone-heading">从单机沙箱走向网络与身份边界</h4>
+            <p class="milestone-text">
+              追踪上万智能体跨沙箱协同现象，完成本机代理链路排查与出口白名单改造，探索下一代智能体工作负载的身份归因与信任委托体系。
+            </p>
+          </div>
+
+          <div class="milestone-item">
+            <div class="milestone-season">DIMENSION II · 记忆谱系与开源破局</div>
+            <h4 class="milestone-heading">打通上游开源工具链，拆解前沿记忆与协议</h4>
+            <p class="milestone-text">
+              向 TDD-Guard 提交跨平台与多网关兼容补丁；深入拆解 Kimi K3 权重级记忆谱系、DeepSeek 插件化内核与无状态 MCP 协议容灾实验。
+            </p>
+          </div>
+
+          <div class="milestone-item">
+            <div class="milestone-season">DIMENSION III · 防御底座与自动化器物</div>
+            <h4 class="milestone-heading">锻造四层安全防线与 Office 自动化注入技能</h4>
+            <p class="milestone-text">
+              从一次真实的桌面误删事故中复盘重构，开源全工具链防御钩子与审计日志；发布 Populating-Office-Templates 自动化排版技能。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         第五幕：04 / 远航 · 终章与连接
+         ====================================================================== -->
+    <section class="scene finale-scene" id="horizon" data-scene="4">
+      <div class="finale-card">
+        <div class="scene-chapter-tag">04 / HORIZON · 远航</div>
+        <h2 class="finale-title">月有朔望，行无止境</h2>
+        <p class="finale-desc">
+          这里是我陈列代表器物与工程审美的静谧一隅。若想查阅完整的开源仓库、阅读四万余字的系统架构手记，或探讨技术合作，欢迎经由下方入口与我相连。
+        </p>
+
+        <div class="portal-grid">
+          <a class="portal-box" href="https://github.com/ZhangJing-gugugaga" target="_blank" rel="noopener">
+            <div class="portal-name">GitHub ↗</div>
+            <div class="portal-role">@ZhangJing-gugugaga · 开源仓库与贡献</div>
+          </a>
+          <a class="portal-box" href="https://www.moonzj.com/" target="_blank" rel="noopener">
+            <div class="portal-name">技术文集 ↗</div>
+            <div class="portal-role">www.moonzj.com · 深度架构复盘与长文手记</div>
+          </a>
+          <a class="portal-box" href="https://github.com/ZhangJing-gugugaga/Populating-Office-Templates" target="_blank" rel="noopener">
+            <div class="portal-name">代表开源 ↗</div>
+            <div class="portal-role">Populating Office Templates · 自动化排版引擎</div>
+          </a>
+        </div>
+
+        <div class="copyright-line">
+          © 2026 Zenith Jade · 张敬 (MoonZJ) — 揽星穹之盛，怀璞玉之温
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       4. ASTRONOMICALLY AUTHENTIC LUNAR WAXING/WANING, SKY ARCH & STAR VORTEX ENGINE
+       ======================================================================== -->
+  <script>
+    (function () {
+      const canvas = document.getElementById("lunarStage");
+      const ctx = canvas.getContext("2d");
+      const cursorAstrolabe = document.getElementById("cursorAstrolabe");
+
+      const PALETTE = {
+        litR: 255, litG: 251, litB: 240,
+        midR: 222, midG: 210, midB: 186,
+        mareR: 130, mareG: 126, mareB: 120,
+        darkR: 7, darkG: 10, darkB: 17,
+        earthR: 16, earthG: 22, earthB: 34,
+        glowInner: "rgba(248, 235, 204, 0.30)",
+        glowMid: "rgba(195, 214, 245, 0.09)",
+        orbitLine: "rgba(238, 215, 168, 0.13)",
+        starAccent: "238, 215, 168",
+        starBase: "230, 236, 250"
+      };
+
+      document.querySelectorAll("a, button, .artwork-card, .persona-pillar, .milestone-item").forEach(el => {
+        el.addEventListener("mouseenter", () => cursorAstrolabe.classList.add("hovered"));
+        el.addEventListener("mouseleave", () => cursorAstrolabe.classList.remove("hovered"));
+      });
+
+      const TEX_SIZE = 340;
+      const offCanvas = document.createElement("canvas");
+      offCanvas.width = TEX_SIZE;
+      offCanvas.height = TEX_SIZE;
+      const offCtx = offCanvas.getContext("2d");
+      const imgData = offCtx.createImageData(TEX_SIZE, TEX_SIZE);
+
+      const surfaceMap = new Float32Array(TEX_SIZE * TEX_SIZE * 6);
+      const features = [
+        { x: 0.22, y: -0.16, r: 0.35, depth: -0.30 },
+        { x: -0.32, y: -0.10, r: 0.42, depth: -0.32 },
+        { x: 0.02, y: -0.34, r: 0.28, depth: -0.27 },
+        { x: 0.44, y: 0.05, r: 0.19, depth: -0.26 },
+        { x: 0.28, y: 0.18, r: 0.22, depth: -0.22 },
+        { x: -0.10, y: 0.50, r: 0.13, depth: 0.24 },
+        { x: -0.22, y: -0.06, r: 0.11, depth: 0.20 },
+        { x: 0.18, y: 0.34, r: 0.14, depth: 0.14 },
+        { x: -0.44, y: 0.26, r: 0.14, depth: 0.14 }
+      ];
+
+      function hash2D(x, y) {
+        const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+        return s - Math.floor(s);
+      }
+
+      function valueNoise(x, y) {
+        const ix = Math.floor(x);
+        const iy = Math.floor(y);
+        const fx = x - ix;
+        const fy = y - iy;
+        const ux = fx * fx * (3 - 2 * fx);
+        const uy = fy * fy * (3 - 2 * fy);
+        const a = hash2D(ix, iy);
+        const b = hash2D(ix + 1, iy);
+        const c = hash2D(ix, iy + 1);
+        const d = hash2D(ix + 1, iy + 1);
+        return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+      }
+
+      function fbm(x, y) {
+        let v = 0, amp = 0.5, freq = 1;
+        for (let i = 0; i < 4; i++) {
+          v += amp * valueNoise(x * freq, y * freq);
+          freq *= 2.15;
+          amp *= 0.48;
+        }
+        return v;
+      }
+
+      const TILT_RAD = -8 * Math.PI / 180;
+      const COS_TILT = Math.cos(TILT_RAD);
+      const SIN_TILT = Math.sin(TILT_RAD);
+
+      (function initMoonGeometry() {
+        const half = TEX_SIZE / 2;
+        for (let py = 0; py < TEX_SIZE; py++) {
+          for (let px = 0; px < TEX_SIZE; px++) {
+            const idx = (py * TEX_SIZE + px) * 6;
+            const u = (px - half) / (half - 2);
+            const v = (py - half) / (half - 2);
+            const r2 = u * u + v * v;
+            if (r2 > 1) {
+              surfaceMap[idx + 2] = -1;
+              continue;
+            }
+            const z = Math.sqrt(1 - r2);
+            const n1 = fbm((u + 2) * 3.0, (v + 2) * 3.0);
+            const n2 = fbm((u + 5) * 10.5, (v + 5) * 10.5);
+            let albedo = 0.80 + (n1 - 0.5) * 0.38 + (n2 - 0.5) * 0.16;
+
+            let bumpX = (n2 - 0.5) * 0.05;
+            let bumpY = (n1 - 0.5) * 0.05;
+
+            for (let c = 0; c < features.length; c++) {
+              const cr = features[c];
+              const dx = u - cr.x;
+              const dy = v - cr.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < cr.r) {
+                const t = 1 - dist / cr.r;
+                if (cr.depth < 0) {
+                  albedo += cr.depth * (t * t);
+                } else {
+                  const rim = Math.sin(t * Math.PI * 2);
+                  bumpX += (dx / (dist + 0.001)) * rim * 0.07;
+                  bumpY += (dy / (dist + 0.001)) * rim * 0.07;
+                  albedo += cr.depth * Math.pow(t, 0.65);
+                }
+              }
+            }
+
+            albedo = Math.max(0.36, Math.min(1.15, albedo));
+            const uRot = u * COS_TILT - v * SIN_TILT;
+            const vRot = u * SIN_TILT + v * COS_TILT;
+
+            surfaceMap[idx]     = uRot;
+            surfaceMap[idx + 1] = vRot;
+            surfaceMap[idx + 2] = z;
+            surfaceMap[idx + 3] = uRot + bumpX;
+            surfaceMap[idx + 4] = vRot + bumpY;
+            surfaceMap[idx + 5] = albedo;
+          }
+        }
+      })();
+
+      let lastSynodicAngle = -999;
+      let needsTextureUpdate = true;
+
+      function renderMoonSphere(synodicAngle) {
+        if (!needsTextureUpdate && Math.abs(synodicAngle - lastSynodicAngle) < 0.004) {
+          return;
+        }
+        lastSynodicAngle = synodicAngle;
+        needsTextureUpdate = false;
+
+        const sx = Math.sin(synodicAngle);
+        const sy = 0.0;
+        const sz = -Math.cos(synodicAngle);
+
+        const data = imgData.data;
+
+        for (let py = 0; py < TEX_SIZE; py++) {
+          for (let px = 0; px < TEX_SIZE; px++) {
+            const pIdx = py * TEX_SIZE + px;
+            const sIdx = pIdx * 6;
+            const oIdx = pIdx * 4;
+            const z = surfaceMap[sIdx + 2];
+            if (z < 0) {
+              data[oIdx + 3] = 0;
+              continue;
+            }
+            const uRot = surfaceMap[sIdx];
+            const vRot = surfaceMap[sIdx + 1];
+            const nx = surfaceMap[sIdx + 3];
+            const ny = surfaceMap[sIdx + 4];
+            const albedo = surfaceMap[sIdx + 5];
+
+            const cosIncidence = uRot * sx + vRot * sy + z * sz;
+            const detailIncidence = nx * sx + ny * sy + z * sz;
+
+            const terminator = Math.max(0, Math.min(1, (cosIncidence + 0.025) / 0.09));
+            const smoothTerminator = terminator * terminator * (3 - 2 * terminator);
+
+            const diffuse = Math.max(0, detailIncidence);
+            const lommel = diffuse / (diffuse + z * 0.38 + 0.04);
+            const sunlit = smoothTerminator * (0.28 * diffuse + 0.84 * lommel) * albedo;
+
+            const earthFactor = (0.25 + 0.75 * albedo) * (0.3 + 0.7 * z);
+            const darkR = PALETTE.darkR + (PALETTE.earthR - PALETTE.darkR) * earthFactor;
+            const darkG = PALETTE.darkG + (PALETTE.earthG - PALETTE.darkG) * earthFactor;
+            const darkB = PALETTE.darkB + (PALETTE.earthB - PALETTE.darkB) * earthFactor;
+
+            const edgeAlpha = Math.min(1, z * 11.0) * (0.55 + 0.45 * smoothTerminator);
+
+            let r, g, b;
+            if (smoothTerminator <= 0.005) {
+              r = darkR;
+              g = darkG;
+              b = darkB;
+            } else {
+              let litR, litG, litB;
+              if (sunlit < 0.54) {
+                const t = sunlit / 0.54;
+                litR = PALETTE.mareR * 0.58 + (PALETTE.midR - PALETTE.mareR * 0.58) * t;
+                litG = PALETTE.mareG * 0.58 + (PALETTE.midG - PALETTE.mareG * 0.58) * t;
+                litB = PALETTE.mareB * 0.58 + (PALETTE.midB - PALETTE.mareB * 0.58) * t;
+              } else {
+                const t = Math.min(1, (sunlit - 0.54) / 0.50);
+                litR = PALETTE.midR + (PALETTE.litR - PALETTE.midR) * t;
+                litG = PALETTE.midG + (PALETTE.litG - PALETTE.midG) * t;
+                litB = PALETTE.midB + (PALETTE.litB - PALETTE.midB) * t;
+              }
+
+              r = darkR + (litR - darkR) * smoothTerminator;
+              g = darkG + (litG - darkG) * smoothTerminator;
+              b = darkB + (litB - darkB) * smoothTerminator;
+            }
+
+            data[oIdx]     = Math.max(0, Math.min(255, r));
+            data[oIdx + 1] = Math.max(0, Math.min(255, g));
+            data[oIdx + 2] = Math.max(0, Math.min(255, b));
+            data[oIdx + 3] = Math.round(edgeAlpha * 255);
+          }
+        }
+        offCtx.putImageData(imgData, 0, 0);
+      }
+
+      const STAR_COUNT = 210;
+      const stars = Array.from({ length: STAR_COUNT }, (_, i) => {
+        const angle = (i * 2.399963) % (Math.PI * 2);
+        const distNorm = Math.sqrt((i + 0.5) / STAR_COUNT) * 0.92 + (Math.random() - 0.5) * 0.08;
+        const isBright = i % 11 === 0;
+        const isWarm = i % 5 === 0;
+        return {
+          baseAngle: angle,
+          baseRadiusNorm: Math.max(0.04, distNorm),
+          r: isBright ? (Math.random() * 1.1 + 1.45) : (Math.random() * 1.15 + 0.35),
+          alpha: isBright ? (Math.random() * 0.25 + 0.72) : (Math.random() * 0.55 + 0.20),
+          twinkleSpeed: Math.random() * 0.025 + 0.008,
+          phase: Math.random() * Math.PI * 2,
+          depth: Math.random() * 0.75 + 0.25,
+          isBright,
+          isWarm,
+          swirlAngle: 0,
+          swirlStrength: 0,
+          swirlSpeed: (0.014 + (i % 7) * 0.0032) * (i % 2 === 0 ? 1 : 0.75)
+        };
+      });
+
+      const trailParticles = [];
+
+      function spawnTrailParticle(x, y, vx, vy) {
+        if (trailParticles.length > 55) trailParticles.shift();
+        trailParticles.push({
+          x: x + (Math.random() - 0.5) * 14,
+          y: y + (Math.random() - 0.5) * 14,
+          vx: vx * 0.14 + (Math.random() - 0.5) * 0.45,
+          vy: vy * 0.14 + (Math.random() - 0.5) * 0.45 - 0.15,
+          r: Math.random() * 1.6 + 0.6,
+          life: 1.0,
+          decay: Math.random() * 0.018 + 0.014
+        });
+      }
+
+      const STAGES = [
+        { progress: 0.00, thetaDeg: 45,  radius: 0.29 },
+        { progress: 0.25, thetaDeg: 90,  radius: 0.29 },
+        { progress: 0.50, thetaDeg: 180, radius: 0.32 },
+        { progress: 0.75, thetaDeg: 270, radius: 0.29 },
+        { progress: 1.00, thetaDeg: 315, radius: 0.29 }
+      ];
+
+      function getSkyArchPosition(p, vw, vh) {
+        const x = vw * (0.76 - p * 0.54);
+        const arch = 4 * p * (1 - p);
+        const y = vh * (0.60 - arch * 0.24);
+        return { x, y };
+      }
+
+      let targetProgress = 0;
+      let smoothProgress = 0;
+
+      let cursorX = window.innerWidth * 0.36;
+      let cursorY = window.innerHeight * 0.46;
+      let smoothCursorX = cursorX;
+      let smoothCursorY = cursorY;
+      let lastRawX = cursorX;
+      let lastRawY = cursorY;
+
+      function updateScrollProgress() {
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        targetProgress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+        if (Math.abs(targetProgress - smoothProgress) > 0.15) {
+          smoothProgress = targetProgress;
+        }
+      }
+
+      window.addEventListener("scroll", updateScrollProgress, { passive: true });
+
+      window.addEventListener("mousemove", function (e) {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+        const dx = cursorX - lastRawX;
+        const dy = cursorY - lastRawY;
+        const speed = Math.hypot(dx, dy);
+        if (speed > 3) {
+          spawnTrailParticle(cursorX, cursorY, dx * 0.08, dy * 0.08);
+          lastRawX = cursorX;
+          lastRawY = cursorY;
+        }
+      }, { passive: true });
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        needsTextureUpdate = true;
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      updateScrollProgress();
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function interpolateStage(p) {
+        for (let i = 0; i < STAGES.length - 1; i++) {
+          const s0 = STAGES[i];
+          const s1 = STAGES[i + 1];
+          if (p >= s0.progress && p <= s1.progress) {
+            const t = (p - s0.progress) / (s1.progress - s0.progress);
+            return {
+              thetaDeg: lerp(s0.thetaDeg, s1.thetaDeg, t),
+              radius: lerp(s0.radius, s1.radius, t),
+              stageIdx: Math.round(p * (STAGES.length - 1))
+            };
+          }
+        }
+        const last = STAGES[STAGES.length - 1];
+        return { thetaDeg: last.thetaDeg, radius: last.radius, stageIdx: STAGES.length - 1 };
+      }
+
+      let tick = 0;
+
+      function animate() {
+        tick += 1;
+        smoothProgress = lerp(smoothProgress, targetProgress, 0.14);
+        smoothCursorX = lerp(smoothCursorX, cursorX, 0.12);
+        smoothCursorY = lerp(smoothCursorY, cursorY, 0.12);
+
+        cursorAstrolabe.style.transform = `translate3d(${smoothCursorX.toFixed(1)}px, ${smoothCursorY.toFixed(1)}px, 0) rotate(${(tick * 0.4) % 360}deg)`;
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const vmin = Math.min(vw, vh);
+        const vmax = Math.max(vw, vh);
+
+        const st = interpolateStage(smoothProgress);
+        const synodicRad = (st.thetaDeg * Math.PI) / 180;
+        const radius = st.radius * vmin;
+
+        const normMouseX = (smoothCursorX / vw - 0.5) * 2;
+        const normMouseY = (smoothCursorY / vh - 0.5) * 2;
+
+        const pos = getSkyArchPosition(smoothProgress, vw, vh);
+        const cx = pos.x + normMouseX * 14;
+        const cy = pos.y + normMouseY * 10;
+
+        ctx.clearRect(0, 0, vw, vh);
+
+        // 1. 鼠标星璇光晕
+        const VORTEX_RADIUS = 250;
+        const cursorGlow = ctx.createRadialGradient(
+          smoothCursorX, smoothCursorY, 4,
+          smoothCursorX, smoothCursorY, VORTEX_RADIUS
+        );
+        cursorGlow.addColorStop(0, `rgba(${PALETTE.starAccent}, 0.14)`);
+        cursorGlow.addColorStop(0.45, `rgba(${PALETTE.starAccent}, 0.04)`);
+        cursorGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = cursorGlow;
+        ctx.beginPath();
+        ctx.arc(smoothCursorX, smoothCursorY, VORTEX_RADIUS, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 2. 随月流转重排 + 绕鼠标微旋的动态星群
+        const skyRotation = smoothProgress * 0.72;
+        const skyCenterX = vw * 0.50 + (vw * 0.50 - cx) * 0.18;
+        const skyCenterY = vh * 0.50 + (vh * 0.50 - cy) * 0.18;
+
+        const vortexStars = [];
+
+        for (let i = 0; i < STAR_COUNT; i++) {
+          const star = stars[i];
+
+          const rotAngle = star.baseAngle + skyRotation * (0.45 + star.depth * 0.65);
+          const radialDist = star.baseRadiusNorm * vmax * 0.76;
+          let sx = skyCenterX + Math.cos(rotAngle) * radialDist - normMouseX * 18 * star.depth;
+          let sy = skyCenterY + Math.sin(rotAngle) * radialDist * 0.78 - normMouseY * 14 * star.depth;
+
+          sx = ((sx % vw) + vw) % vw;
+          sy = ((sy % vh) + vh) % vh;
+
+          // 月球引力透镜偏转与环绕
+          const dxMoon = sx - cx;
+          const dyMoon = sy - cy;
+          const distMoon = Math.hypot(dxMoon, dyMoon);
+          const moonInfluenceRadius = radius * 2.15;
+
+          if (distMoon < moonInfluenceRadius && distMoon > 0.001) {
+            const mFactor = Math.pow(1 - distMoon / moonInfluenceRadius, 1.6);
+            const pushDist = radius * 0.42 * mFactor;
+            const moonAngle = Math.atan2(dyMoon, dxMoon) + mFactor * 0.48 * (i % 2 === 0 ? 1 : -1);
+            const newDist = Math.max(radius * 1.05, distMoon + pushDist);
+            sx = cx + Math.cos(moonAngle) * newDist;
+            sy = cy + Math.sin(moonAngle) * newDist;
+          }
+
+          // 鼠标星璇微旋转
+          const dxMouse = sx - smoothCursorX;
+          const dyMouse = sy - smoothCursorY;
+          const distMouse = Math.hypot(dxMouse, dyMouse);
+
+          if (distMouse < VORTEX_RADIUS && distMouse > 2) {
+            const proximity = 1 - distMouse / VORTEX_RADIUS;
+            const targetStrength = proximity * proximity * (0.85 + 0.3 * star.depth);
+            star.swirlStrength = lerp(star.swirlStrength, targetStrength, 0.12);
+            star.swirlAngle += star.swirlSpeed * (0.65 + proximity * 1.6);
+          } else {
+            star.swirlStrength = lerp(star.swirlStrength, 0, 0.08);
+          }
+
+          if (star.swirlStrength > 0.002) {
+            const baseTheta = Math.atan2(dyMouse, dxMouse);
+            const activeAngle = baseTheta + star.swirlAngle * star.swirlStrength;
+            const pulledDist = distMouse * (1 - 0.14 * star.swirlStrength);
+            const vortexX = smoothCursorX + Math.cos(activeAngle) * pulledDist;
+            const vortexY = smoothCursorY + Math.sin(activeAngle) * pulledDist;
+            sx = lerp(sx, vortexX, Math.min(1, star.swirlStrength * 1.25));
+            sy = lerp(sy, vortexY, Math.min(1, star.swirlStrength * 1.25));
+
+            if (distMouse < VORTEX_RADIUS * 0.85) {
+              vortexStars.push({ star, sx, sy, distMouse, proximity: 1 - distMouse / VORTEX_RADIUS });
+            }
+          }
+
+          if (Math.hypot(sx - cx, sy - cy) < radius * 0.98) {
+            continue;
+          }
+
+          const tw = star.alpha + Math.sin(tick * star.twinkleSpeed + star.phase) * 0.18 + star.swirlStrength * 0.35;
+          const clampedAlpha = Math.max(0.08, Math.min(1, tw));
+          const rgb = star.isWarm || star.swirlStrength > 0.2 ? PALETTE.starAccent : PALETTE.starBase;
+
+          if (star.swirlStrength > 0.08) {
+            const rMouse = Math.hypot(sx - smoothCursorX, sy - smoothCursorY);
+            const curAng = Math.atan2(sy - smoothCursorY, sx - smoothCursorX);
+            const arcSpan = (0.16 + 0.28 * star.swirlStrength);
+            ctx.strokeStyle = `rgba(${PALETTE.starAccent}, ${(star.swirlStrength * 0.38).toFixed(3)})`;
+            ctx.lineWidth = Math.max(0.7, star.r * 0.65);
+            ctx.beginPath();
+            ctx.arc(smoothCursorX, smoothCursorY, rMouse, curAng - arcSpan, curAng);
+            ctx.stroke();
+          }
+
+          ctx.fillStyle = `rgba(${rgb}, ${clampedAlpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(sx, sy, star.r * (1 + star.swirlStrength * 0.35), 0, Math.PI * 2);
+          ctx.fill();
+
+          if (star.isBright || star.swirlStrength > 0.32) {
+            const spikeLen = star.r * (3.2 + star.swirlStrength * 3.5);
+            ctx.strokeStyle = `rgba(${rgb}, ${(clampedAlpha * 0.55).toFixed(2)})`;
+            ctx.lineWidth = 0.75;
+            ctx.beginPath();
+            ctx.moveTo(sx - spikeLen, sy);
+            ctx.lineTo(sx + spikeLen, sy);
+            ctx.moveTo(sx, sy - spikeLen);
+            ctx.lineTo(sx, sy + spikeLen);
+            ctx.stroke();
+          }
+        }
+
+        // 鼠标星璇星宿连线
+        if (vortexStars.length > 1) {
+          ctx.save();
+          for (let i = 0; i < vortexStars.length; i++) {
+            const a = vortexStars[i];
+            for (let j = i + 1; j < vortexStars.length; j++) {
+              const b = vortexStars[j];
+              const d = Math.hypot(a.sx - b.sx, a.sy - b.sy);
+              if (d < 95) {
+                const lineAlpha = (1 - d / 95) * Math.min(a.proximity, b.proximity) * 0.28;
+                ctx.strokeStyle = `rgba(${PALETTE.starAccent}, ${lineAlpha.toFixed(3)})`;
+                ctx.lineWidth = 0.7;
+                ctx.beginPath();
+                ctx.moveTo(a.sx, a.sy);
+                ctx.lineTo(b.sx, b.sy);
+                ctx.stroke();
+              }
+            }
+          }
+          ctx.restore();
+        }
+
+        // 流光星屑尾迹
+        for (let i = trailParticles.length - 1; i >= 0; i--) {
+          const pt = trailParticles[i];
+          pt.x += pt.vx;
+          pt.y += pt.vy;
+          pt.life -= pt.decay;
+          if (pt.life <= 0) {
+            trailParticles.splice(i, 1);
+            continue;
+          }
+          ctx.fillStyle = `rgba(${PALETTE.starAccent}, ${(pt.life * 0.65).toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.r * pt.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 3. 东升西落天穹拱弧轨道线
+        ctx.save();
+        ctx.strokeStyle = PALETTE.orbitLine;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 10]);
+        ctx.beginPath();
+        for (let step = -6; step <= 106; step += 2) {
+          const pt = getSkyArchPosition(step / 100, vw, vh);
+          if (step === -6) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        for (let i = 0; i < STAGES.length; i++) {
+          const anchorPt = getSkyArchPosition(STAGES[i].progress, vw, vh);
+          ctx.fillStyle = i === st.stageIdx ? "rgba(238, 215, 168, 0.85)" : "rgba(238, 215, 168, 0.25)";
+          ctx.beginPath();
+          ctx.arc(anchorPt.x, anchorPt.y, i === st.stageIdx ? 3.5 : 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // 4. 偏向受光亮面的柔和大气月晕 + 潮汐锁定的真实 3D 月球本体
+        const sunDirX = Math.sin(synodicRad) * COS_TILT;
+        const sunDirY = Math.sin(synodicRad) * SIN_TILT;
+        const illumFraction = (1 - Math.cos(synodicRad)) / 2;
+        const glowCenterX = cx + sunDirX * radius * 0.42 * (1 - illumFraction * 0.7);
+        const glowCenterY = cy + sunDirY * radius * 0.42 * (1 - illumFraction * 0.7);
+        const glowRadius = radius * (1.45 + illumFraction * 0.95);
+
+        const outerGlow = ctx.createRadialGradient(
+          glowCenterX, glowCenterY, radius * 0.25,
+          glowCenterX, glowCenterY, glowRadius
+        );
+        outerGlow.addColorStop(0, PALETTE.glowInner);
+        outerGlow.addColorStop(0.45, PALETTE.glowMid);
+        outerGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = outerGlow;
+        ctx.beginPath();
+        ctx.arc(glowCenterX, glowCenterY, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
+
+        renderMoonSphere(synodicRad);
+        ctx.save();
+        ctx.translate(cx, cy);
+        const libration = Math.sin(smoothProgress * Math.PI) * 0.038;
+        ctx.rotate(libration);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(offCanvas, -radius, -radius, radius * 2, radius * 2);
+        ctx.restore();
+
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    })();
+  </script>
+</body>
+</html>
