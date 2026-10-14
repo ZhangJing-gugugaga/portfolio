@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>张敬 · 月亮困了，服务还醒着</title>
+  <meta name="description" content="张敬（ZJ）——长沙学院计算机科学与技术，半夜做点真的东西。Purple 校园问答、Termify 字符动画工坊、RPD-Skill，都在线上跑着。" />
+  <meta property="og:title" content="张敬 · 月亮困了，服务还醒着" />
+  <meta property="og:description" content="两台服务器，四个在线服务，一群真的在用它们的人。" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M22 4a12 12 0 1 0 6 22A14 14 0 0 1 22 4z' fill='%23f0e9d8'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/fonts/lxgw-wenkai-light.css" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <!-- 颗粒纹理：让夜色像胶片而不是纯色块 -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- 月相滚动指示：全站唯一常驻动效，读完整页正好一个完整月相 -->
+  <button class="moonphase" id="moonphase" type="button" aria-label="月相：滚动进度，点击回到顶部">
+    <span class="mp-disc" aria-hidden="true">
+      <span class="mp-shadow a"></span>
+      <span class="mp-shadow b"></span>
+    </span>
+    <span class="mp-hint" aria-hidden="true">月亮又困了</span>
+  </button>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-dot" aria-hidden="true"></span>张敬<span class="brand-en">Zhang Jing</span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#work">东西</a>
+        <a href="#circle">社群</a>
+        <a href="#writing">夜记</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= 首屏 ================= -->
+  <section class="hero" id="top">
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <div class="hero-moon" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <h1 class="hero-name">张敬<span class="hero-sign">Zhang Jing</span></h1>
+      <p class="hero-line">在长沙读计算机，半夜做点真的东西。</p>
+      <p class="hero-desc">
+        计算机科学与技术 2024 级。东西散在两台服务器上，
+        最长的一台一百多天没重启，备份每晚自己跑。
+      </p>
+
+      <div class="hero-term" aria-label="线上服务状态">
+        <div class="term-bar"><i></i><i></i><i></i><span>zhangjing@infra — zsh</span></div>
+        <pre class="term-body" id="termtyping" aria-live="polite"></pre>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>力学笃行</span><span>purple · 校园制度问答</span><span>termify · 万物皆可终端</span><span>月亮困了，服务还醒着</span>
+      <span>力学笃行</span><span>purple · 校园制度问答</span><span>termify · 万物皆可终端</span><span>月亮困了，服务还醒着</span>
+    </div>
+  </div>
+
+  <!-- ================= 自述 ================= -->
+  <section class="sec sec-letter" id="about">
+    <div class="sec-inner letter">
+      <p class="letter-lead" data-wipe>大二下学期的一天，我在终端里敲错一条命令，整个桌面没了。</p>
+      <p class="letter-p" data-wipe>那晚我把它写成复盘，给手上的 AI 编码工具加了四层防护。也是那晚我想明白：工具越强，规矩越得自己立。之后做的每件事都是这句话的延伸——RPD-Skill 是给 AI 立的规矩，Purple 是给答案立的闸门，凌晨三点的备份是给数据立的闹钟。</p>
+      <p class="letter-p" data-wipe>我信一个朴素的道理：能上线的粗糙，好过收藏夹里的完美。下面是证据。</p>
+      <div class="letter-sign">
+        <span class="sign-en">Zhang Jing</span>
+        <span class="sign-note">写于长沙，一个不困的夜里</span>
+      </div>
+    </div>
+    <p class="letter-facts" data-wipe>长沙学院，计算机科学与技术，2024 级，GPA 3.78，综测专业前 5% · 在找 AI 应用开发实习，人在长沙</p>
+  </section>
+
+  <!-- ================= 方法论 ================= -->
+  <section class="sec sec-method" id="method">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>怎么做事</h2>
+      <p class="sec-note">方法论写在页面上容易，做到难。这三条，页面本身就是证据。</p>
+      <div class="method">
+        <div class="m-row" data-wipe><span class="m-no">壹</span><h3>上线才算数</h3><p>跑在服务器上的才叫作品，收藏夹里的只能叫计划。</p></div>
+        <div class="m-row" data-wipe><span class="m-no">贰</span><h3>让数据说话</h3><p>TTFT、召回率、uptime。感觉会撒谎，指标不会。</p></div>
+        <div class="m-row" data-wipe><span class="m-no">叁</span><h3>先立规矩再放手上</h3><p>给 AI 立护栏，给答案立出处闸门——规矩永远先于速度。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 东西 ================= -->
+  <section class="sec" id="work">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>拿得出手的<b>三件</b>东西</h2>
+      <p class="sec-note">少而精。每一个现在就能点开，图是实时截图。</p>
+
+      <a class="feature" href="https://purple.moonzj.com" target="_blank" rel="noopener">
+        <div class="feature-shot">
+          <img src="assets/img/shot-purple.jpg" alt="Purple 落地页实时截图：CCSU 标语、720° 校园全景与语料数字" loading="lazy" />
+        </div>
+        <div class="feature-copy">
+          <h3>Purple <span>校园制度问答</span></h3>
+          <p>同学们问得最多的是「图书馆几点开门」，它答得又快又准。语料只收 15 个部门官网的公开文件，句句带出处，查不到就直说。</p>
+          <p class="feature-meta">17,631 条制度条款 / 5,796 份公开文件 / 515 个真实会话</p>
+        </div>
+      </a>
+
+      <div class="work-duo">
+        <a class="work-card" href="https://termify.moonzj.com" target="_blank" rel="noopener">
+          <div class="work-shot"><img src="assets/img/shot-termify.jpg" alt="Termify 首页实时截图：终端演示卡" loading="lazy" /></div>
+          <h3>Termify</h3>
+          <p>起因是想把一段视频塞进终端里放给朋友看，做着做着长成了三端产品。九种渲染风格，导出 .py、.html、.mp4 都行。</p>
+          <p class="work-meta">v1.2.0 在线 · 217 条测试全绿 · MIT 开源</p>
+        </a>
+        <a class="work-card" href="https://github.com/ZhangJing-gugugaga/RPD-Skill" target="_blank" rel="noopener">
+          <div class="work-shot"><img src="assets/img/shot-rpd.jpg" alt="RPD-Skill 仓库实时截图：50 Stars 与目录结构" loading="lazy" /></div>
+          <h3>RPD-Skill</h3>
+          <p>AI 编码会失忆，也会手滑改错东西。这个 Skill 给它立规矩：状态文件是唯一真相源，动手前过检查清单，八条护栏兜底。</p>
+          <p class="work-meta">50+ Stars · 19 个评测场景 · 实验室 15 个组，10 个自发用起来</p>
+        </a>
+      </div>
+
+      <div class="work-strip">
+        <p class="strip-lead">也在跑的，一并交代：</p>
+        <div class="work-line">
+          <span class="wl-name">教材征订系统</span>
+          <span class="wl-desc">小程序 + Spring Boot + Web 管理端，学院在用</span>
+          <span class="wl-state">生产环境</span>
+        </div>
+        <div class="work-line">
+          <span class="wl-name">专业牛马</span>
+          <span class="wl-desc">钉钉里的 AI 小玩具，名字自嘲，但六个模型降级链和 MCP Server 都是真的</span>
+          <span class="wl-state">生产环境</span>
+        </div>
+        <div class="work-line">
+          <span class="wl-name">Life Guard</span>
+          <span class="wl-desc">CPR-VR 急救培训，校级大创。我管后端 QA，盯前后端契约别跑偏</span>
+          <span class="wl-state">开发中</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 服务器 ================= -->
+  <section class="sec sec-servers" id="servers">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>两台不关机的机器</h2>
+      <p class="sec-note">作品集吹牛没成本，uptime 有。</p>
+
+      <div class="term" data-wipe>
+        <div class="term-bar"><i></i><i></i><i></i><span>zhangjing@infra:~$ systemctl status zhangjing</span></div>
+        <div class="term-run">
+          <p class="run-host">server-01 <span>应用与数据 · 连续运行 14 天</span></p>
+          <div class="run-row"><span class="run-dot"></span><code>purple</code><span class="run-desc">校园制度问答</span><span class="run-metric">515 会话 / 854 消息</span></div>
+          <div class="run-row"><span class="run-dot"></span><code>textbook-order</code><span class="run-desc">教材征订 · Spring Boot</span><span class="run-metric">running 20d+</span></div>
+          <div class="run-row"><span class="run-dot"></span><code>caddy</code><span class="run-desc">反代 · 证书 · 静态</span><span class="run-metric">80 / 443</span></div>
+          <p class="run-host">server-02 <span>工具与自动化 · 连续运行 117 天</span></p>
+          <div class="run-row"><span class="run-dot"></span><code>termify</code><span class="run-desc">字符动画工坊 · gunicorn</span><span class="run-metric">v1.2.0 · 每日 03:00 备份</span></div>
+          <div class="run-row"><span class="run-dot"></span><code>www.moonzj.com</code><span class="run-desc">博客 · Astro 静态</span><span class="run-metric">12 篇 / 4.1 万字</span></div>
+          <div class="run-row"><span class="run-dot"></span><code>dingtalk-bot ×2</code><span class="run-desc">钉钉 AI 助手</span><span class="run-metric">六模型降级链</span></div>
+          <div class="run-row"><span class="run-dot"></span><code>butler.timer</code><span class="run-desc">早报 08:00 · 晚餐 17:00 · 周一 09:00 周报</span><span class="run-metric">cron · 4 项</span></div>
+        </div>
+      </div>
+      <p class="run-note">数据截至 2026-10-14。最长那台 117 天没动过，比我的很多计划都长寿。</p>
+    </div>
+  </section>
+
+  <!-- ================= 社群 ================= -->
+  <section class="sec" id="circle">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>有人在看我做事</h2>
+      <p class="sec-note">没有代码，但一样认真。</p>
+
+      <div class="stickers">
+        <a class="sticker st-tilt-l" href="https://www.moonzj.com" target="_blank" rel="noopener">
+          <span class="st-k">抖音</span>
+          <h3>月亮又困了&🍅🅥</h3>
+          <p>记录做项目的深夜和翻车的现场，累计播放 10 万+。</p>
+        </a>
+        <div class="sticker st-tilt-r">
+          <span class="st-k">社群发起</span>
+          <h3>长沙学院 WowLand 发起人</h3>
+          <p>把学校的抖音 AI 社群从零拉到 120+ 人，办过百校造百岛、仔仔次元。</p>
+        </div>
+        <div class="sticker st-tilt-l2">
+          <span class="st-k">身份</span>
+          <h3>长沙 AI 创变者</h3>
+          <p>抖音 AI 创变者计划长沙站成员，和同城高校伙伴把 AI 玩法落进校园。</p>
+        </div>
+        <div class="sticker st-tilt-r2">
+          <span class="st-k">大使</span>
+          <h3>腾讯云 AI 校园大使</h3>
+          <p>本职就一件事：让同学亲手做出自己的第一个 AI 作品。</p>
+        </div>
+        <a class="sticker st-tilt-l" href="https://www.moonzj.com" target="_blank" rel="noopener">
+          <span class="st-k">测评</span>
+          <h3>观猹 · 咕咕嘎嘎</h3>
+          <p>认证产品观猹员。认真用过才有资格评，9 篇深度测评都来自真实使用。</p>
+        </a>
+        <div class="sticker st-tilt-r st-photo">
+          <span class="st-k">线下</span>
+          <h3>图书馆的 AI 课</h3>
+          <div class="sticker-media">
+            <img src="assets/img/library-class.jpg" alt="七月，芙蓉区图书馆，孩子们围着电脑上 AI 体验课" loading="lazy" />
+          </div>
+          <p>七月，芙蓉区图书馆。教小学生用 AI 查资料、做小作品。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 夜记 ================= -->
+  <section class="sec sec-writing" id="writing">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>夜记</h2>
+      <p class="sec-note">博客叫「温润的技术笔记」，12 篇 4.1 万字，都来自真实使用。挑五篇：</p>
+
+      <div class="posts">
+        <a class="post" href="https://www.moonzj.com/posts/claude-code-safety/" target="_blank" rel="noopener">
+          <span class="post-title">一次 rm -rf 桌面，和它引发的 Claude Code 安全架构改造</span><span class="post-date">2026.06</span>
+        </a>
+        <a class="post" href="https://www.moonzj.com/posts/agent-token-overhead/" target="_blank" rel="noopener">
+          <span class="post-title">实测 Coding Agent 的 token 账单：你发一句话它读四万字</span><span class="post-date">2026.07</span>
+        </a>
+        <a class="post" href="https://www.moonzj.com/posts/kimi-k3-memory/" target="_blank" rel="noopener">
+          <span class="post-title">Kimi K3 记忆架构拆解：KDA 把遗忘变成了学出来的能力</span><span class="post-date">2026.08</span>
+        </a>
+        <a class="post" href="https://www.moonzj.com/posts/agent-collusion/" target="_blank" rel="noopener">
+          <span class="post-title">Agent 的第一次「越狱」不是提示注入，是共谋</span><span class="post-date">2026.09</span>
+        </a>
+        <a class="post" href="https://www.moonzj.com/posts/agent-memory-architecture/" target="_blank" rel="noopener">
+          <span class="post-title">Agent 记忆架构全景——从虚拟上下文管理到 MCP 驱动的 RAG</span><span class="post-date">2026.06</span>
+        </a>
+      </div>
+      <p class="writing-more"><a href="https://www.moonzj.com" target="_blank" rel="noopener">剩下的在博客里</a></p>
+    </div>
+  </section>
+
+  <!-- ================= 经历 ================= -->
+  <section class="sec" id="story">
+    <div class="sec-inner">
+      <h2 class="sec-title" data-wipe>四年，四章</h2>
+
+      <ol class="chapters">
+        <li class="chapter">
+          <span class="ch-no">CH.01</span>
+          <div class="ch-body">
+            <h3>2024 · 打地基</h3>
+            <p>入读长沙学院计算机科学与技术。大一没急着做什么大东西，拿了国家励志奖学金、校级高数竞赛一等奖和春季程序设计竞赛的奖。</p>
+          </div>
+        </li>
+        <li class="chapter">
+          <span class="ch-no">CH.02</span>
+          <div class="ch-body">
+            <h3>2025 · 学扛事</h3>
+            <p>当了计科院学生会安全督导部部长，带 10 个人，年底评上院级优秀部长、优秀部门。同年在 AI 实验室带 4 人开发小组。蓝桥杯、团体天梯赛、数学建模、计算机设计大赛，四项省级奖都在这一年。</p>
+          </div>
+        </li>
+        <li class="chapter">
+          <span class="ch-no">CH.03</span>
+          <div class="ch-body">
+            <h3>2026 · 全上线</h3>
+            <p>Life Guard 大创立项，Termify 三端上线，RPD-Skill 开源到 50 星，钉钉智能体进生产，Purple 上线。抖音播放量过了十万，WowLand 社群拉到 120 人，成了腾讯云 AI 校园大使。</p>
+          </div>
+        </li>
+        <li class="chapter chapter-now">
+          <span class="ch-no">CH.04</span>
+          <div class="ch-body">
+            <h3>现在</h3>
+            <p>在找 AI 应用开发实习，意向长沙。RAG、MCP、Agent 这条路我自己走通过一遍，想把它接到真实业务上，跟着一个认真的团队把东西做重。</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= 联系 ================= -->
+  <section class="sec sec-contact" id="contact">
+    <div class="sec-inner">
+      <h2 class="sec-title contact-title" data-wipe>有事，直接说。</h2>
+      <p class="sec-note">实习机会、合作，或者只是想聊聊 Agent 怎么落地。邮件最快，看到就回。</p>
+
+      <div class="contact-rows">
+        <a class="contact-row" href="mailto:2031818023@qq.com">
+          <span class="cr-k">邮箱</span><span class="cr-v">2031818023@qq.com</span>
+        </a>
+        <a class="contact-row" href="https://github.com/ZhangJing-gugugaga" target="_blank" rel="noopener">
+          <span class="cr-k">GitHub</span><span class="cr-v">ZhangJing-gugugaga</span>
+        </a>
+        <a class="contact-row" href="https://www.moonzj.com" target="_blank" rel="noopener">
+          <span class="cr-k">博客</span><span class="cr-v">www.moonzj.com</span>
+        </a>
+        <div class="contact-row">
+          <span class="cr-k">抖音</span><span class="cr-v">月亮又困了&🍅🅥</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-dawn">天快亮了。这个页面写完了，月亮也快下班了。</p>
+    <p>© 2026 张敬 · moonzj.com</p>
+    <p class="footer-motto">怀少年热忱，赴星河以逐理想</p>
+    <p class="footer-built">built with agent · 数据截至 2026-10-14</p>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
